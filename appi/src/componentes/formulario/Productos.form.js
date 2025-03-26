@@ -1,19 +1,21 @@
-import * as yup from 'yup';
-export function initialValues() {
-    return {
-        nombre: '',
-        precio: '',
-        cantidad: '',
-        unidad: '',
-        imagen: ''
+import * as YUP from "yup";
+
+export function initialValues(){
+    return{
+        nombre: "",
+        precio: "",
+        cantidad: "",
+        unidad: "",
+        imagep: "",
     }
 }
 
-export function validationSchema() {
-    return yup.object({
-        nombre: yup.string().required(true),
-        precio: yup.number().required(true),
-        cantidad: yup.number().required(true),
-        unidad: yup.string().required(true),
-        imagen: yup.string().required()
-    })}
+export function validationSchema(){
+    return YUP.object({
+        nombre:YUP.string(),
+        precio: YUP.number(),
+        cantidad: YUP.number(),
+        unidad: YUP.string(),
+        imagep: YUP.string()
+    })
+}
