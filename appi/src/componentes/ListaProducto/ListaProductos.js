@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button } from "react-bootstrap";
 
-export function ListProductos({ productos, onDelete }) {
+export function ListProductos({ productos, onDelete,onEdit }) {
   const handleDelete = (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
       try {
@@ -65,7 +65,9 @@ export function ListProductos({ productos, onDelete }) {
                   </div>
                 </td>
                 <td>
-                  <Button variant="success">Editar</Button>
+                  <Button variant="success"
+                  onClick={()=> onEdit(producto)}
+                  >Editar</Button>
                 </td>
                 <td>
                   <Button
