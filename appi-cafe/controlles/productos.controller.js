@@ -47,7 +47,7 @@ async function delProducto(req, res) {
 
         // Eliminar la imagen asociada si existe
         if (producto.imagep) {
-            const imagePath = path.join(__dirname, '..', producto.imagep);
+            const imagePath = path.join(__dirname, '..', 'uploads', producto.imagep);
             try {
                 await fs.promises.unlink(imagePath);
             } catch (err) {
@@ -66,12 +66,27 @@ async function delProducto(req, res) {
 
 async function updateProducto(req, res) {
     const { id } = req.params;
-    const updateProducto = req.body;
+    const updateData = req.body;
 
     try {
+        if (req.files?.imagep) {
+            const filePath = imagen.getFilePath(req.files.imagep); 
+            const fileName = path.basename(filePath); 
+            updateData.imagep = fileName;
+
+            const producto = await Producto.findById(id);
+            if (producto?.imagep) {
+                const oldImagePath = path.join(__dirname, '..', 'uploads', producto.imagep);
+                if (fs.existsSync(oldImagePath)) {
+                    await fs.promises.unlink(oldImagePath); 
+                }
+            }
+        }
+
+        // Actualiza el producto en la base de datos
         const productoActualizado = await Producto.findByIdAndUpdate(
             id,
-            updateProducto,
+            updateData,
             { new: true } // Devuelve el producto actualizado
         );
 
@@ -82,7 +97,7 @@ async function updateProducto(req, res) {
         res.status(200).send({ msg: "Producto actualizado correctamente", producto: productoActualizado });
     } catch (error) {
         console.error("Error al actualizar el producto:", error);
-        res.status(400).send({ msg: "Error al actualizar el producto", error: error.message });
+        res.status(500).send({ msg: "Error al actualizar el producto", error: error.message });
     }
 }
 
