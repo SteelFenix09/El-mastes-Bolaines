@@ -19,7 +19,7 @@ async function createProducto(req, res) {
             msg: "Producto creado correctamente",
             datos,
             imageId: productos.imagep, // Devuelve el nombre del archivo
-            imageUrl: `http://localhost:4000/uploads/${productos.imagep}`, // Construye la URL completa
+            imageUrl: `http://localhost:4000/${productos.imagep}`, // Construye la URL completa
         });
     } catch (error) {
         console.error("Error al crear el producto:", error);
