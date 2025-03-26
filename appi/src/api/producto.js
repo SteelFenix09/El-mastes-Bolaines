@@ -32,7 +32,7 @@ export class Producto {
         try {
             const url = `${this.baseApi}${ENV.API_ROUTES.GETPRODUCTOS}`;
             const response = await Axios.get(url);
-            console.log("Productos obtenidos correctamente:", response.data);
+            //console.log("Productos obtenidos correctamente:", response.data);
             return response.data; // Devuelve la lista de productos
         } catch (error) {
             console.error("Error al obtener los productos:", error.message);
@@ -55,14 +55,9 @@ export class Producto {
     // Actualizar un producto por ID
     async updateProducto(id, data) {
         try {
-            const formData = new FormData();
-            Object.keys(data).forEach((key) => {
-                formData.append(key, data[key]); // Incluye todos los campos, incluyendo "imagep" si existe
-            });
-
             const response = await Axios.patch(
                 `${this.baseApi}${ENV.API_ROUTES.UPDATEPRODUCTO}/${id}`,
-                formData,
+                data,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
                 }

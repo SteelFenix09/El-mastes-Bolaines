@@ -13,7 +13,15 @@ export function EditarProducto({ producto, onUpdate }) {
         },
         onSubmit: async (formValue) => {
             try {
-                await onUpdate(producto._id, formValue); // Llama a la función de actualización
+                const formData = new FormData();
+                formData.append('nombre', formValue.nombre);
+                formData.append('precio', formValue.precio);
+                formData.append('cantidad', formValue.cantidad);
+                formData.append('unidad', formValue.unidad);
+                if(formValue.imagep){
+                    formData.append('imagep',formValue.imagep)
+                }
+                await onUpdate(producto._id, formData); // Llama a la función de actualización
             } catch (error) {
                 console.error("Error al actualizar el producto:", error);
             }
@@ -70,9 +78,14 @@ export function EditarProducto({ producto, onUpdate }) {
                         name="imagep"
                         onChange={(event) => {
                             const file = event.currentTarget.files[0];
-                            formik.setFieldValue("imagep", file); 
+                            if(file){
+                                formik.setFieldValue("imagep",file)
+                            }
                         }}
                     />
+                    <small className='text-muted'>
+                        {producto.imagep && "Imagen actual: " + producto.imagep}
+                    </small>
                 </Form.Group>
             </Row>
             <Button type="submit">Actualizar</Button>

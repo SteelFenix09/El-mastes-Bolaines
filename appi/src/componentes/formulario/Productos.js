@@ -20,6 +20,7 @@ export function Productos() {
                 const response = await ctrProducto.createProducto(formValue);
                 const newProducto = response.datos; // Producto creado
                 setListaProductos((prevProductos) => [...prevProductos, newProducto]);
+                obtenerProductos();
                 resetForm(); // Limpia el formulario después de un envío exitoso
             } catch (error) {
                 console.error("Error al agregar el producto:", error);
