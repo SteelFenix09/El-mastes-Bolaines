@@ -9,6 +9,7 @@ export function EditarProducto({ producto, onUpdate }) {
             precio: producto.precio || '',
             cantidad: producto.cantidad || '',
             unidad: producto.unidad || '',
+            imagep: null, 
         },
         onSubmit: async (formValue) => {
             try {
@@ -58,6 +59,19 @@ export function EditarProducto({ producto, onUpdate }) {
                         name="unidad"
                         value={formik.values.unidad}
                         onChange={formik.handleChange}
+                    />
+                </Form.Group>
+            </Row>
+            <Row className="mb-3">
+                <Form.Group as={Col} md="6">
+                    <Form.Label>Imagen del producto</Form.Label>
+                    <Form.Control
+                        type="file"
+                        name="imagep"
+                        onChange={(event) => {
+                            const file = event.currentTarget.files[0];
+                            formik.setFieldValue("imagep", file); 
+                        }}
                     />
                 </Form.Group>
             </Row>
