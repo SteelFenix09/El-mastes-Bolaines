@@ -11,7 +11,10 @@ export function ListProductos({ productos, onDelete }) {
       }
     }
   };
- 
+
+  // Base URL para las imágenes (ajusta según tu configuración)
+  const baseImageUrl = "http://localhost:4000";
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -29,11 +32,6 @@ export function ListProductos({ productos, onDelete }) {
       <tbody>
         {Array.isArray(productos) && productos.length > 0 ? (
           productos.map((producto, index) => {
-            // Validar que el producto sea un objeto válido
-            if (!producto || typeof producto !== "object") {
-              return null; // Ignorar elementos inválidos
-            }
-
             return (
               <tr key={producto._id || index}>
                 <td>{index + 1}</td>
@@ -44,19 +42,25 @@ export function ListProductos({ productos, onDelete }) {
                 <td>
                   <div
                     style={{
-                      border: "1px solid #ddd",
+                      border: "2px solid #007bff", // Recuadro azul alrededor de la imagen
                       padding: "5px",
                       display: "inline-block",
                       borderRadius: "5px",
                       backgroundColor: "#f9f9f9",
+                      width: "60px", // Ajusta el ancho del contenedor
+                      height: "60px", // Ajusta la altura del contenedor
+                      textAlign: "center",
                     }}
                   >
                     <img
-                     // src={producto.imagen || "https://via.placeholder.com/50"}
-                      alt="Imagen del producto"
+                      src={producto.imageUrl || `${baseImageUrl}/${producto.imagep}`} // Construye la URL de la imagen
+                      alt={`Imagen de ${producto.nombre}`}
                       width="50"
                       height="50"
-                      style={{ objectFit: "cover" }}
+                      style={{
+                        objectFit: "cover",
+                        borderRadius: "3px", // Bordes redondeados para la imagen
+                      }}
                     />
                   </div>
                 </td>

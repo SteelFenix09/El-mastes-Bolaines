@@ -31,7 +31,7 @@ export class Producto {
         try {
             const url = `${this.baseApi}${ENV.API_ROUTES.GETPRODUCTOS}`;
             const response = await Axios.get(url);
-            return response.data;
+            return response.data; // Asegúrate de que los datos incluyan la URL de la imagen
         } catch (error) {
             console.error("Error al obtener los productos:", error);
             return [];
