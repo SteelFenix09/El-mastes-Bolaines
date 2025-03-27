@@ -28,11 +28,10 @@ export function Productos() {
         }
     };
 
-    const handleUpdate = async (formData) => {
+    const handleUpdate = async (updatedData) => {
         try {
-            await ctrProducto.updateProducto(currentProduct._id, formData);
+            await ctrProducto.updateProducto(updatedData._id, updatedData);
             obtenerProductos(); // Actualiza la lista de productos
-            setCurrentProduct(null); // Limpia el producto actual después de editar
         } catch (error) {
             console.error("Error al actualizar producto:", error);
         }
@@ -63,7 +62,7 @@ export function Productos() {
                         console.error("Error al eliminar:", error);
                     }
                 }}
-                onEdit={setCurrentProduct} // Establece el producto actual para editar
+                onEdit={handleUpdate} // Pasa la función de edición
             />
         </div>
     );
