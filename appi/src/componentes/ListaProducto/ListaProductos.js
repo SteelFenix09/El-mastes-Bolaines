@@ -3,43 +3,23 @@ import { Table, Button, Modal } from "react-bootstrap";
 import { EditarProducto } from '../formulario';
 
 export function ListProductos({ productos, onDelete, onEdit }) {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false)
+  const [selecProdc, setselecProdc] = useState(null)
 
-  const handleDelete = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-      try {
-        onDelete(id);
-      } catch (error) {
-        console.error("Error al intentar eliminar el producto:", error);
-      }
-    }
-  };
 
-  const handleEditClick = (producto) => {
-    setSelectedProduct(producto);
-    setShowEditModal(true);
-  };
+  const handleEdit = (producto) => {
+    setselecProdc(producto);
+    setShowModal(true)
+  }
 
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
-    setSelectedProduct(null);
-  };
-
-  const handleUpdateProduct = async (id, formData) => {
-    try {
-      await onEdit(id, formData);
-      handleCloseEditModal();
-    } catch (error) {
-      console.error("Error al actualizar el producto:", error);
-    }
-  };
-
-  const baseImageUrl = "http://localhost:4000";
+  const handleClose = () => {
+    setShowModal(false);
+    setselecProdc(null)
+  }
 
   return (
     <>
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>#</th>
@@ -53,65 +33,70 @@ export function ListProductos({ productos, onDelete, onEdit }) {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(productos) && productos.length > 0 ? (
-            productos.map((producto, index) => (
-              <tr key={producto._id || index}>
-                <td>{index + 1}</td>
-                <td>{producto.nombre || "Sin nombre"}</td>
-                <td>${producto.precio || "0.00"}</td>
-                <td>{producto.cantidad || "0"}</td>
-                <td>{producto.unidad || "N/A"}</td>
-                <td>
-                  <div style={{ border: "2px solid #007bff", padding: "5px", display: "inline-block", borderRadius: "5px", backgroundColor: "#f9f9f9", width: "60px", height: "60px", textAlign: "center" }}>
-                    <img
-                      src={producto.imageUrl || `${baseImageUrl}/${producto.imagep}`}
-                      alt={`Imagen de ${producto.nombre}`}
-                      width="50"
-                      height="50"
-                      style={{ objectFit: "cover", borderRadius: "3px" }}
-                    />
-                  </div>
-                </td>
-                <td>
-                  <Button variant="primary" onClick={() => handleEditClick(producto)}>
-                    Editar
-                  </Button>
-                </td>
-                <td>
-                  <Button variant="danger" onClick={() => handleDelete(producto._id)}>
-                    Eliminar
-                  </Button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" className="text-center">
-                No hay productos disponibles
+          {productos.map((producto, index) => (
+            <tr key={producto._id}>
+              <td>{index + 1}</td>
+              <td>{producto.nombre || "Sin nombre"}</td>
+              <td>${producto.precio || "0.00"}</td>
+              <td>{producto.cantidad || "0"}</td>
+              <td>{producto.unidad || "N/A"}</td>
+              <td>
+                <div
+                  style={{
+                    border: "2px solid #007bff",
+                    padding: "5px",
+                    display: "inline-block",
+                    borderRadius: "5px",
+                    backgroundColor: "#f9f9f9",
+                    width: "60px",
+                    height: "60px",
+                    textAlign: "center",
+                  }}
+                >
+                  <img
+                    src={producto.imageUrl || `http://localhost:4000/${producto.imagep}`}
+                    alt={`Imagen de ${producto.nombre}`}
+                    width="50"
+                    height="50"
+                    style={{
+                      objectFit: "cover",
+                      borderRadius: "3px",
+                    }}
+                  />
+                </div>
+              </td>
+              <td>
+                <Button variant="success" size="sm" onClick={() => handleEdit(producto)}>
+                  Editar
+                </Button>
+              </td>
+              <td>
+                <Button variant="danger" size="sm" onClick={() => onDelete(producto._id)}>
+                  Eliminar
+                </Button>
               </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </Table>
 
-      {/* Modal de Edición */}
-      <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg">
+      <Modal show={showModal} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Editar Producto: {selectedProduct?.nombre}</Modal.Title>
+          <Modal.Title>Editar Producto</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedProduct && (
-            <EditarProducto 
-              producto={selectedProduct} 
-              onUpdate={handleUpdateProduct}
+          {selecProdc && (
+            <EditarProducto
+              producto={selecProdc}
+              onSubmit={(updatedData) => {
+                onEdit(updatedData); // Llama a la función de edición pasada desde el componente padre
+                handleClose(); // Cierra el modal después de actualizar
+              }}
+              onCancel={handleClose} // Cierra el modal si se cancela
+              isEditing={true} // Indica que está en modo edición
             />
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>
-            Cancelar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
