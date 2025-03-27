@@ -100,6 +100,10 @@ export function EditarProducto({ producto, onSubmit, onCancel, isEditing }) {
                     <Form.Control.Feedback type="invalid">
                         {formik.errors.imagep}
                     </Form.Control.Feedback>
+                    {producto?.imagep && (
+                        <Form.Text className="text-muted">
+                            ID : <strong>{producto.imagep}</strong>
+                        </Form.Text>)}
                 </Form.Group>
             </Row>
 
