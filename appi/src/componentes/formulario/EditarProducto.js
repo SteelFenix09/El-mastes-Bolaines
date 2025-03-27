@@ -107,10 +107,7 @@ export function EditarProducto({ producto, onSubmit, onCancel, isEditing }) {
                 </Form.Group>
             </Row>
 
-            <div className="d-flex justify-content-end gap-2 mt-3">
-                <Button variant="secondary" onClick={onCancel}>
-                    Cancelar
-                </Button>
+            <div className="d-flex justify-content-end gap-2 mt-3">             
                 <Button type="submit" disabled={formik.isSubmitting}>
                     {isEditing ? 'Actualizar' : 'Crear'}
                 </Button>

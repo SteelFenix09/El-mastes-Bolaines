@@ -59,7 +59,6 @@ export class Producto {
             Object.keys(data).forEach((key) => {
                 formData.append(key, data[key]); // Incluye todos los campos, incluyendo "imagep"
             });
-
             const response = await Axios.patch(
                 `${this.baseApi}${ENV.API_ROUTES.UPDATEPRODUCTO}/${id}`,
                 formData,
